@@ -108,6 +108,8 @@ services:
         OAUTH2_PROXY_REDIRECT_URL: ${REDIRECT_URL}
       ports: 
          - "${PROXY_PORT}:4180"
+      extra_hosts:
+         - "keycloak.turyan.site:10.0.0.12"
 
 volumes:
   seaweedfs-data:
