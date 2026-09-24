@@ -1,0 +1,34 @@
+<clickhouse>
+    <!-- Lightweight: stay inside the 3 GB container limit -->
+    <max_server_memory_usage>2500000000</max_server_memory_usage>
+    <mark_cache_size>268435456</mark_cache_size>
+    <uncompressed_cache_size>0</uncompressed_cache_size>
+    <listen_host>0.0.0.0</listen_host>
+
+    <!-- Named S3 connection to the SeaweedFS "lake" bucket.
+         Usage: SELECT * FROM s3(lake, filename = 'raw/file.parquet') -->
+    <named_collections>
+        <lake>
+            <url>http://seaweedfs:8333/lake/</url>
+            <access_key_id from_env="S3_ACCESS_KEY"/>
+            <secret_access_key from_env="S3_SECRET_KEY"/>
+        </lake>
+    </named_collections>
+
+    <!-- Optional: an S3 disk so tables/backups can live in SeaweedFS -->
+    <storage_configuration>
+        <disks>
+            <lake_disk>
+                <type>s3</type>
+                <endpoint>http://seaweedfs:8333/lake/clickhouse/</endpoint>
+                <access_key_id from_env="S3_ACCESS_KEY"/>
+                <secret_access_key from_env="S3_SECRET_KEY"/>
+            </lake_disk>
+        </disks>
+        <policies>
+            <lake>
+                <volumes><main><disk>lake_disk</disk></main></volumes>
+            </lake>
+        </policies>
+    </storage_configuration>
+</clickhouse>
