@@ -1,2 +1,2 @@
 FROM clickhouse/clickhouse-server:latest
-COPY listen.xml /etc/clickhouse-server/config.d/listen.xml
+COPY clickhouse/config.d/platform /etc/clickhouse-server/config.d/listen.xml
